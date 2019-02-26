@@ -12,7 +12,7 @@
 		"--share=network",
 		"--persist=.clonk",
 		"--socket=pulseaudio",
-		"--device=dri",
+		"--device=all",
 		"--share=ipc"
 	],
 	"modules": [
