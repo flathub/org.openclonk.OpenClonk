@@ -1,7 +1,7 @@
 {
 	"app-id": "org.openclonk.OpenClonk",
 	"runtime": "org.kde.Platform",
-	"runtime-version": "5.15-24.08",
+	"runtime-version": "5.15-25.08",
 	"sdk": "org.kde.Sdk",
 	"command": "openclonk",
 	"rename-desktop-file": "openclonk.desktop",
@@ -16,6 +16,12 @@
 		"--share=ipc",
 		"--env=SDL_VIDEODRIVER=x11"
 	],
+	"cleanup": [
+		"/include",
+		"/lib/pkgconfig",
+		"*.la",
+		"*.a"
+	],
 	"modules": [
 		"shared-modules/glew/glew.json",
 		"shared-modules/glu/glu-9.json",
@@ -27,16 +33,19 @@
 					"url": "https://github.com/vancegroup/freealut/archive/freealut_1_1_0.tar.gz",
 					"sha256": "c3880d7dbb90c7db54e1d6b88aa0a34dd9e2d828fd389be0d2cbb2632b0885dd"
 				}
-			],
-			"cleanup": [
-				"/include",
-				"/lib/pkgconfig",
-				"/lib/*.a",
-				"/lib/*.la"
 			]
 		},
 		{
 			"name": "openclonk",
+			"buildsystem": "cmake",
+			"config-opts": [
+				"-DCMAKE_BUILD_TYPE=Release",
+				"-DAudio_FIND_REQUIRED=On",
+				"-DAudio_TK=OpenAL",
+				"-DCMAKE_CXX_FLAGS=-w",
+				"-DCMAKE_C_FLAGS=-w",
+				"-DCMAKE_POLICY_VERSION_MINIMUM=3.5"
+			],
 			"sources": [
 				{
 					"type": "archive",
@@ -45,28 +54,12 @@
 				},
 				{
 					"type": "patch",
-					"path": "cmake.diff"
-				},
-				{
-					"type": "patch",
-					"path": "appstream.diff"
-				},
-				{
-					"type": "patch",
-					"path": "numeric-limits.diff"
+					"paths": [
+						"cmake.diff",
+						"appstream.diff",
+						"numeric-limits.diff"
+					]
 				}
-			],
-			"buildsystem": "cmake",
-			"config-opts": [
-				"-DCMAKE_BUILD_TYPE=Release",
-				"-DAudio_FIND_REQUIRED=On",
-				"-DAudio_TK=OpenAL",
-				"-DCMAKE_CXX_FLAGS=-w",
-				"-DCMAKE_C_FLAGS=-w"
-			],
-			"cleanup": [
-				"/include",
-				"/lib"
 			]
 		}
 	]
